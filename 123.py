@@ -1,0 +1,1 @@
+savefig('foo.png')
