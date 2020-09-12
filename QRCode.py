@@ -2,6 +2,12 @@ import io
 import pyqrcode
 from base64 import b64encode
 import eel
+import os
+import sys
+import matplotlib
+import matplotlib.pyplot as plt
+import io
+import urllib, base64
 
 eel.init('web')
 def code(data):
@@ -23,7 +29,8 @@ def code(data):
     print ("NRZ")
     print(y)
     print(x)
-
+    plt.cla ()
+    #https://matplotlib.org/3.3.1/gallery/lines_bars_and_markers/eventcollection_demo.html#sphx-glr-gallery-lines-bars-and-markers-eventcollection-demo-py
     plt.step(x, y, label='NRZ')
 
     y2 = []
@@ -73,6 +80,7 @@ def code(data):
     x3 = x
     y3 = []
     count = 0
+
     for i in y:
         if int(i) == 0:
             y3.append(i * 0.5)
@@ -92,8 +100,22 @@ def code(data):
     y3 = np.array(y3)
     plt.step(x3, y3, label = 'AMI')
     plt.savefig('web/foo.png')
-    plt.show()
-    return "Hello"
+    
+    print("Save to Image")
+    
+    
+
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png')
+    print(buf)
+    buf.seek(0)
+    string = base64.b64encode(buf.read())
+
+    uri = 'data:image/png;base64,' + urllib.parse.quote(string)
+    #html = '<img src = "%s"/>' % uri
+    #plt.show()
+    return uri
+    
 
 @eel.expose
 def dummy(dummy_param):
@@ -104,13 +126,16 @@ def dummy(dummy_param):
 @eel.expose
 def generate_qr(data):
     img = code(data)
-    print(type(data))
-    '''buffers = io.BytesIO()
+    '''print(img)
+    buffers = io.BytesIO()
     img.png(buffers, scale=8)
-    encoded = b64encode(buffers.getvalue()).decode("ascii")
-    print("QR code generation successful.")'''
-    return "data:image/png;base64, " + img #encoded 
+    encoded = b64encode(buffers.getvalue()).decode("ascii")'''
+    print("QR code generation successful.")
+    return img #"data:image/png;base64, " + encoded
+    
 
 
 
-eel.start('index.html', size=(1000, 600))
+
+
+eel.start('index.html', size=(1200, 600))
