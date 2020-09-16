@@ -99,7 +99,9 @@ def code(data):
     print(len(y3))
     y3 = np.array(y3)
     plt.step(x3, y3, label = 'AMI')
+    plt.ylim(0,5)
     plt.savefig('web/foo.png')
+
     
     print("Save to Image")
     
