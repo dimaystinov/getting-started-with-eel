@@ -31,7 +31,14 @@ def code(data):
     print(x)
     plt.cla ()
     #https://matplotlib.org/3.3.1/gallery/lines_bars_and_markers/eventcollection_demo.html#sphx-glr-gallery-lines-bars-and-markers-eventcollection-demo-py
-    plt.step(x, y, label='NRZ')
+    j=0
+    for i in s1:
+        plt.text(0.4 + j, 5.2, i)
+        j+=1
+    '''plt.text(-1, 0, "NRZ")
+    plt.text(-1, 2, "Manch")
+    plt.text(-1, 4, "AMI")'''
+    plt.step(x, y, label="NRZ")
 
     y2 = []
     for i in y:
@@ -70,9 +77,9 @@ def code(data):
     y2 = np.array(y2)
     print(y2)
     print(x2)
-    plt.step(x2, y2, label='Манчестерский')
+    plt.step(x2, y2, label="Manch")
 
-    plt.legend()
+
     plt.xlim(0, len(y) + 1)
     plt.ylim(min(y), max(y) + 4)
 
@@ -98,13 +105,14 @@ def code(data):
     print(len(x3))
     print(len(y3))
     y3 = np.array(y3)
-    plt.step(x3, y3, label = 'AMI')
+
+    plt.step(x3, y3, label="AMI")
     plt.ylim(0,5)
     plt.savefig('web/foo.png')
 
     
     print("Save to Image")
-    
+    plt.legend()
     
 
     buf = io.BytesIO()
